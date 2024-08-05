@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Manage Constructions
+{% endblock %}
+
+{% block nav %}
+    Manage Constructions
+{% endblock %}
+
+
+{% block body %}
+
+    {% if constructions %}
+        <div class="container__cards">
+
+            {% for data_constr in constructions %}
+                <form action="/mng_constr" method="get">
+                    <input class="constr_id" type="number" name="id" value="{{ data_constr.id }}">
+                    <button class="card" type="submit" formaction="/constr_info">
+
+                        {% if photo %}
+                            <img src="..." class="card-img-top" alt="...">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{ data_constr.construction_name }}</li>
+                                <li class="list-group-item">{{ data_constr.client }}</li>
+                                <li class="list-group-item">{{ data_constr.address }}</li>
+                                <li class="list-group-item">{{ data_constr.start_date }} to {{ data_constr.end_date }}</li>
+                            </ul>
+                        </div>
+                    </button>
+                </form>
+            {% endfor %}
+            
+        </div>
+
+    {% else %}
+        <div class="container no-info">
+            <div class="mb-3">
+                <h2>No constructions iniciated yet</h2>
+            </div>
+            <div class="mb-3">
+                <a class="btn btn-primary" aria-current="page" href="/new_constr">New Construction</a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

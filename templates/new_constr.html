@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Construction
+{% endblock %}
+
+{% block nav %}
+    New Construction
+{% endblock %}
+
+
+{% block body %}
+    <div class="container-display">
+        <form class="form" action="/new_constr" method="post">
+            <div class="container__form">
+                <div class="in__form">
+                    <h3>Information</h3>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="constr-name" placeholder="Construction name">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="client-name" placeholder="Client name">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="client-address" placeholder="Address">
+                    </div>
+                    <div class="mb-3">
+                        <div class="date-input">
+                            <input type="date" class="form-control" name="start-date">
+                            <p>to</p>
+                            <input type="date" class="form-control" name="end-date">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider-x"></div>
+
+                <div class="in__form">
+                    <h3>Staff</h3>
+                    <div class="mb-3" id="container-select">
+                        <div class="mb-3 select" id="select-worker-0">
+                            <select class="form-select">
+                                <option selected disabled>Name</option>
+
+                                {% for w in workers %}
+                                    <option value="{{ w.name }}">{{ w.name }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button id="btn-add-option" class="btn btn-outline-success btn-sm"><i class="lni lni-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <input id="selected-values" name="selected-workers">
+            <button id="btn-submit" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+    // Select identifiers and counters
+    let selectId = 0
+    let selectCount = 0
+
+    // Button interactions
+    const buttonAdd = document.querySelector("#btn-add-option")
+    const buttonDelete = document.querySelector(`#btn-delete-${selectId}`)
+    const buttonSubmit = document.querySelector("#btn-submit")
+
+    // Values that will be passed to the form
+    const values = document.querySelector("#selected-values")
+
+    // First div: parameter to new ones
+    const divSelectPrimary = document.querySelector("#select-worker-0")
+
+    // Father container
+    const containerSelect = document.querySelector("#container-select")
+
+    // When clicked, it will add another select into the div, so the user will be able to select another worker
+    buttonAdd.addEventListener("click", (event) => {
+        event.preventDefault()
+
+        let newDivSelect = divSelectPrimary.cloneNode(true)
+        selectId ++
+
+        // Unique identifier for each new select
+        newDivSelect.setAttribute("id", `select-worker-${selectId}`)
+
+        selectCount ++
+
+        // Creating a new button to the new select
+        const buttonDelete = document.createElement("button")
+        buttonDelete.innerHTML = '<i class="lni lni-trash-can"></i>'
+        buttonDelete.setAttribute("id", `btn-delete-${selectId}`)
+        buttonDelete.setAttribute("class", "btn btn-outline-danger btn-sm")
+
+        newDivSelect.appendChild(buttonDelete)
+        containerSelect.appendChild(newDivSelect)
+
+        buttonDelete.addEventListener("click", (event) => {
+            event.preventDefault()
+            const removedSelect = buttonDelete.parentNode
+            if (removedSelect) {
+                containerSelect.removeChild(removedSelect)
+            }
+            selectCount --
+            if (selectCount <= 5) {
+                buttonAdd.disabled = false
+            }
+        })
+        if (selectCount > 5) {
+            buttonAdd.disabled = true
+        }
+    })
+
+
+    // When the form's submitted, all the data contained in all selects must be passed in a single format
+    buttonSubmit.addEventListener("click", (event) => {
+
+        // Variable that will receive all those values
+        values.value = ""
+
+        // Loop for each select
+        for (i = 0; i <= selectId; i++) {
+            const actualValue = document.querySelector(`#select-worker-${i}`).firstElementChild.value
+
+            // Ignoring default value 'name' from inputs with no value selected
+            if (actualValue === "Name") {
+                continue
+            }
+
+            // Adding value to the variable
+            values.value += actualValue
+
+            // Condition to prevent that the code lines below won't be executed when the loop ends
+            if (i == selectId) {
+                break
+            }
+
+            // Applying a "csv" format
+            values.value += ","
+        }
+    })
+
+</script>
+{% endblock %}

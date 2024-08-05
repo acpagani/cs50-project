@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register Worker
+{% endblock %}
+
+{% block nav %}
+    Register new worker
+{% endblock %}
+
+{% block body %}
+    <div class="worker__form">
+        <div class="mb-3">
+            <h2>Worker's data</h2>
+        </div>
+        <form class="form" action="/register_worker" method="post">
+            <div class="mb-3">
+                <input class="form-control" type="text" name="name" placeholder="Name">
+            </div>
+            <div class="mb-3">
+                <input class="form-control" type="text" name="role" placeholder="Job Role">
+            </div>
+            <div class="mb-3">
+                <input class="form-control" type="text" name="phone" placeholder="Phone Number">
+            </div>
+            <div class="mb-3">
+                <input class="form-control" type="email" name="email" placeholder="Email address">
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+{% endblock %}

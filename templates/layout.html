@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css">
+
+
+    <title>BuilData: {% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container__grid">
+            <nav class="navbar">
+                <div class="container-fluid">
+
+                    {% if not session["user_id"] %}
+                        <a class="navbar-brand" href="#">
+                            <img src="/static/logo/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
+                            BuilData
+                        </a>
+                    {% else %}
+
+                        <a class="navbar-brand" href="/">
+                            <img src="/static/logo/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
+                            BuilData
+                        </a>
+                        <h4>{% block nav %}{% endblock %}</h4>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <i class="lni lni-home"></i>
+                                            Home Page
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/new_constr">
+                                            <i class="lni lni-circle-plus"></i>
+                                            New Construction
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/mng_constr">
+                                            <i class="lni lni-construction"></i>
+                                            Manage Constructions
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/mng_workers">
+                                            <i class="lni lni-helmet"></i>
+                                            Manage workers
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/register_worker">
+                                            <i class="lni lni-enter"></i>
+                                            Resgister worker
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/delete_worker">
+                                            <i class="lni lni-exit"></i>
+                                            Delete worker
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/logout">
+                                            <i class="lni lni-cross-circle"></i>
+                                            Log Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </nav>
+        </div>
+
+        {% if get_flashed_messages() %}
+            <div class="alert alert-primary mb-0 text-center" role="alert" id="flash-div">
+                {{ get_flashed_messages() | join(" ") }}
+            </div>
+        {% endif %}
+
+    </header>
+
+
+
+    <main class="main">
+        <section class="container text-center container__grid">
+                {% block body %}{% endblock %}
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container__grid">
+            <div class="footer__text">
+                <p>
+                    &copy;Arthur Cotrick Pagani
+                </p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    {% block script %}{% endblock %}
+
+    <script>
+
+        // Setting a timeout for flash messages
+        const flashTimeout = setTimeout(() => {
+
+            const flashDiv = document.querySelector("#flash-div")
+            flashDiv.style = "display: none"
+        }, 3000)
+
+    </script>
+</body>
+</html>

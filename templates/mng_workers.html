@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Manage Data
+{% endblock %}
+
+{% block nav %}
+    Manage workers
+{% endblock %}
+
+{% block body %}
+
+    <!-- Table listing all registered workers -->
+    {% if data_workers %}
+        <table class="table table-hover">
+            <caption>Workers' Table</caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Job Role</th>
+                    <th>Phone Number</th>
+                    <th>E-Mail</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for data in data_workers %}
+                    <tr>
+                        <td>{{ data.name }}</td>
+                        <td>{{ data.role }}</td>
+                        <td>{{ data.phone }}</td>
+                        <td><a href="mailto:{{ data.email }}">{{ data.email }}</a></td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+            <div class="container no-info">
+                <div class="mb-3">
+                    <h2>No workers registered yet</h2>
+                </div>
+                <div class="mb-3">
+                    <a class="btn btn-primary" aria-current="page" href="/register_worker">Resgister worker</a>
+                </div>
+            </div>
+        {% endif %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Delete Worker
+{% endblock %}
+
+{% block nav %}
+    Delete worker
+{% endblock %}
+
+{% block body %}
+    <div class="container worker__form">
+        <div class="mb-3">
+            <h2>Select a worker to delete</h2>
+        </div>
+        <form class="form" action="/delete_worker" method="post">
+            <div class="mb-3">
+                <select name="worker" class="form-select" style="width: 70%; margin: 0 auto">
+                    <option selected disabled>Name</option>
+
+                    {% for w in workers %}
+                        <option>{{ w.name }}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+    </div>
+{% endblock %}

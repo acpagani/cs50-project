@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Construction Info
+{% endblock %}
+
+{% block nav %}
+    {{ construction_data.name }}
+{% endblock %}
+
+{% block body %}
+    <div class="container__info">
+        <div class="client__info">
+            <div class="info__card">
+                <h3><i class="lni lni-user"></i></h3>
+                <h5>{{ construction_data.client }}</h5>
+            </div>
+            <div class="info__card">
+                <h3><i class="lni lni-map-marker"></i></h3>
+                <h5>{{ construction_data.address }}</h5>
+            </div>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staffModal">
+                <h3><i class="lni lni-helmet"></i></h3>
+                <h5>Staff</h5>
+            </button>
+        </div>
+        <button class="btn btn-outline-success btn-lg" data-bs-toggle="modal" data-bs-target="#postModal"><i class="lni lni-plus"></i></button>
+    </div>
+
+    <!-- Staff Interface -->
+    <div class="modal fade" tabindex="-1" id="staffModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Construction's Staff</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <tbody>
+
+                            {% for worker in selected_workers %}
+                                <tr>
+                                    <td>{{ worker.name }}</td>
+                                    <td>{{ worker.role }}</td>
+                                    <td>{{ worker.phone }}</td>
+                                    <td><a href="mailto:{{ worker.email }}">{{ worker.email }}</a></td>
+                                </tr>
+                            {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  <!-- Post Interface -->
+   <form action="/constr_info" method="post" enctype="multipart/form-data">
+      <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="modalLabel">New Post</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container__form">
+                          <div class="in__form">
+                              <div class="mb-3">
+                                <input type="text" class="form-control" name="post-title" placeholder="Title" required>
+                              </div>
+                              <div class="mb-3">
+                                <textarea class="form-control" name="post-description" placeholder="Description"></textarea>
+                              </div>
+                          </div>
+
+                          <div class="divider-x"></div>
+
+                          <div class="in__form">
+                            <div class="mb-3">
+                                <label for="formFileMultiple" class="form-label">Upload Photos (Optional)</label>
+                                <input class="form-control" type="file" accept="image/*" id="formFileMultiple" name="photos-uploaded" multiple>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Post</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+   </form>
+
+    {% if posts %}
+        <div class="posts__container">
+            <div class="divider-y mb-3"></div>
+            <div class="mb-3">
+                <h4>Construction's Updates</h4>
+            </div>
+
+            {% for post in posts %}
+                <div class="divider-y mb-3"></div>
+                <div class="post">
+                    <div class="post__title">
+                        <h6>{{ username }} posted {{ post.datetime }} | {{ post.title }}</h6>
+                    </div>
+                    <p class="post__description">{{ post.description | safe }}</p>
+
+                    {% if photos %}
+                        <div class="photo__container">
+
+                            {% for photo in photos %}
+
+                                {% if post.id == photo.post_id %}
+                                    <img src="{{ photo.photo }}" class="img-thumbnail">
+                                {% endif %}
+
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+    
+{% endblock %}
