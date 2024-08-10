@@ -10,12 +10,12 @@
 
 {% block body %}
     <div class="container__info">
-        <div class="client__info">
-            <div class="info__card">
+        <div class="client-info">
+            <div class="info-card">
                 <h3><i class="lni lni-user"></i></h3>
                 <h5>{{ construction_data.client }}</h5>
             </div>
-            <div class="info__card">
+            <div class="info-card">
                 <h3><i class="lni lni-map-marker"></i></h3>
                 <h5>{{ construction_data.address }}</h5>
             </div>
@@ -70,7 +70,7 @@
                   </div>
                   <div class="modal-body">
                       <div class="container__form">
-                          <div class="in__form">
+                          <div class="in-form">
                               <div class="mb-3">
                                 <input type="text" class="form-control" name="post-title" placeholder="Title" required>
                               </div>
@@ -81,7 +81,7 @@
 
                           <div class="divider-x"></div>
 
-                          <div class="in__form">
+                          <div class="in-form">
                             <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">Upload Photos (Optional)</label>
                                 <input class="form-control" type="file" accept="image/*" id="formFileMultiple" name="photos-uploaded" multiple>
@@ -99,7 +99,7 @@
    </form>
 
     {% if posts %}
-        <div class="posts__container">
+        <div class="container__posts">
             <div class="divider-y mb-3"></div>
             <div class="mb-3">
                 <h4>Construction's Updates</h4>

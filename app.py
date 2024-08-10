@@ -233,7 +233,7 @@ def constr_info():
     if request.method == "POST":
 
         # Keep construction's id selected
-        construction_id = session["constr_id"]
+        construction_id = request.args.get("id")
         data_input = {
             "title": request.form.get("post-title"),
             "description": request.form.get("post-description"),
@@ -280,13 +280,9 @@ def constr_info():
         # Get the construction's id from the mng_constr screen
         construction_id = request.args.get("id")
 
-        # Ensure that the user is picking a construction to look at than just reloading the page
-        if construction_id:
-            session["constr_id"] = construction_id
-
         # Data that will be displayed in screen
-        construction_data = db.execute("SELECT * FROM constructions WHERE id=?", session["constr_id"])
-        posts = db.execute("SELECT * FROM posts WHERE construction_id=? ORDER BY id DESC", session["constr_id"])
+        construction_data = db.execute("SELECT * FROM constructions WHERE id=?", construction_id)
+        posts = db.execute("SELECT * FROM posts WHERE construction_id=? ORDER BY id DESC", construction_id)
         username = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
         photos = db.execute("SELECT * FROM photos")
 
@@ -298,7 +294,7 @@ def constr_info():
         selected_workers = db.execute("""SELECT * FROM workers
                            JOIN selected_workers ON workers.id = worker_id
                            JOIN constructions ON selected_workers.construction_id = constructions.id
-                           WHERE workers.user_id=? AND construction_id=?""", session["user_id"], session["constr_id"])
+                           WHERE workers.user_id=? AND construction_id=?""", session["user_id"], construction_id)
 
         return render_template("constr_info.html", construction_data=construction_data[0], posts=posts, photos=photos, username=username[0]["username"], selected_workers=selected_workers)
 

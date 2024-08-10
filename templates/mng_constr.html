@@ -15,9 +15,7 @@
         <div class="container__cards">
 
             {% for data_constr in constructions %}
-                <form action="/mng_constr" method="get">
-                    <input class="constr_id" type="number" name="id" value="{{ data_constr.id }}">
-                    <button class="card" type="submit" formaction="/constr_info">
+                    <a class="card" href="/constr_info?id={{ data_constr.id }}">
 
                         {% if photo %}
                             <img src="..." class="card-img-top" alt="...">
@@ -31,8 +29,7 @@
                                 <li class="list-group-item">{{ data_constr.start_date }} to {{ data_constr.end_date }}</li>
                             </ul>
                         </div>
-                    </button>
-                </form>
+                    </a>
             {% endfor %}
             
         </div>
